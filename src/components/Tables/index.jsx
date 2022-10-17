@@ -7,7 +7,8 @@ import { getData } from '../../helpers/data'
 import { FilterMatchMode } from 'primereact/api'
 import { MultiSelect } from 'primereact/multiselect'                               //icons
 import { Dropdown } from 'primereact/dropdown'
-import 'primereact/resources/themes/bootstrap4-light-blue/theme.css'  //theme
+// import 'primereact/resources/themes/bootstrap4-light-blue/theme.css'  //theme
+import 'primereact/resources/themes/lara-light-blue/theme.css'
 import 'primereact/resources/primereact.min.css'                  //core css
 import 'primeicons/primeicons.css'
 
@@ -26,7 +27,7 @@ export default function Table () {
     layout: 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown',
     'RowsPerPageDropdown': (options) => {
       const dropdownOptions = [
-        { label: 'All', value: options.totalRecords },
+          { label: 'All', value: options.totalRecords },
           { label: 10, value: 10 },
           { label: 25, value: 25 },
           { label: 50, value: 50 },
@@ -59,7 +60,7 @@ export default function Table () {
   }
 
   const statusRowFilterTemplate = (options) => {
-    return <Dropdown value={options.value} options={statuses} onChange={(e) => options.filterApplyCallback(e.value)} itemTemplate={statusItemTemplate} placeholder="Estatus" showClear />;
+    return <Dropdown style={{color: 'red'}} value={options.value} options={statuses} onChange={(e) => options.filterApplyCallback(e.value)} itemTemplate={statusItemTemplate} placeholder="Estatus" showClear />;
   }
   
   //filtro de Contratistas
@@ -72,7 +73,7 @@ export default function Table () {
   }
 
   const contratistaRowFilterTemplate = (options) => {
-    return <MultiSelect value={options.value} options={ contratistasFilter } 
+    return <MultiSelect style={{color: 'red'}} panelStyle={{color: 'red'}} value={options.value} options={ contratistasFilter } 
     itemTemplate={contratistaItemTemplate} onChange={(e) => options.filterApplyCallback(e.value)}  
     placeholder='Contratista' maxSelectedLabels={1} />;
   }
@@ -81,22 +82,23 @@ export default function Table () {
 
   return(
     <>
-      <div className='bg-slate-100 mx-10 my-5 text-[1.5rem] w-full h-full'>
-        <div className='text-white rounded-md'>
+      <div className='bg-slate-100  my-5'>
+        <div className='py-10'>
           { data.length === 0 ? <div className='text-2xl fw-semibold text-blue-600 p-4'>Cargando Tabla...</div> :
-            <DataTable value={data} paginator responsiveLayout='scroll' stripedRows
+            <DataTable className='p-4 text-left mx-4'
+            value={data} paginator responsiveLayout='scroll' stripedRows
             paginatorTemplate={paginatorTemplate1} currentPageReportTemplate="Showing {first} to {last} of {totalRecords}" 
-            rows={10} filterDisplay="row" filters={filters}> 
-              <Column className='py-2 px-4 text-sm' field='contratista_nombre_comercial' header='Contratista'
-              filterField="contratista_nombre_comercial" showFilterMenu={false} filterMenuStyle={{ width: '14rem'}} style={{ minWidth: '14rem' }} body={contratistaBodyTemplate}
-              filter filterElement={contratistaRowFilterTemplate} sortable></Column>
-              <Column className='py-2 px-4 text-sm' field='Proyecto' header='Proyecto' sortable></Column>
-              <Column className='py-2 px-4 text-sm' field='documento' header='Documento' sortable></Column>
-              <Column className='py-2 px-4 text-sm' field='estatus' header='Estatus' sortable 
-              showFilterMenu={false} style={{ width: '7rem'}} 
+            rows={10} filterDisplay="row" filters={filters} showGridlines > 
+              <Column className='py-2 text-xs' field='contratista_nombre_comercial' header='Contratista' filterHeaderStyle={{backgroundColor: 'rgba(0, 100, 250, 0.2)', fontSize: '0.7rem'}}
+              filterField="contratista_nombre_comercial" showFilterMenu={false} filterMenuStyle={{ width: '12rem'}} style={{ minWidth: '14rem'}} body={contratistaBodyTemplate} filter 
+              filterElement={contratistaRowFilterTemplate} sortable></Column>
+              <Column className='py-2 text-xs' field='Proyecto' header='Proyecto' sortable></Column>
+              <Column className='py-2 text-xs' field='documento' header='Documento' sortable></Column>
+              <Column className='py-2 text-xs' field='estatus' header='Estatus' sortable 
+              showFilterMenu={false} style={{ width: '7rem'}} filterMenuClassName='text-xs' filterHeaderStyle={{backgroundColor: 'rgba(0, 100, 250, 0.2)', fontSize: '0.7rem'}}
               body={statusBodyTemplate} filter filterElement={statusRowFilterTemplate}></Column> 
-              <Column className='py-2 px-4 text-sm' field='trabajado' header='Trabajado' sortable></Column>
-              <Column className='py-2 px-4 text-sm' field='trabajado_por' header='Trabajado por' sortable></Column>
+              <Column className='py-2 text-xs' field='trabajado' header='Trabajado' sortable></Column>
+              <Column className='py-2 text-xs' field='trabajado_por' header='Trabajado por' sortable></Column>
             </DataTable>
           }
         </div>
